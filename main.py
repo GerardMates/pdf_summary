@@ -8,9 +8,9 @@ import markdown
 load_dotenv()
 
 text_to_num = {
-    'curt': 150,
-    'mitjà': 500,
-    'llarg': 1000,
+    'curt': 250,
+    'mitjà': 1000,
+    'llarg': 2000,
 }
 
 # Add to session state
@@ -49,11 +49,15 @@ def main():
         if not st.session_state['summary_done']:
             with st.spinner("Resumint..."):
                 initial_message = {"role": "user", "content": f"""
-                Resumeix el text següent de manera que quedin ben clares les idees principals en un màxim de {text_to_num[number]} paraules. 
-                Escriu-ho tot en format markdown i utilitza les features de markdown, sobre tot bullet points i negretes. També els èmfasis de paraules ``.
+                Resumeix el text següent en l'idioma {lang} i en més o menys {text_to_num[number]} paraules. Desenvolupa bé cada idea principal.
+                L'objectiu és poder entendre el text original sense haver de llegir-lo tot. 
+                Si hi ha conceptes clau, explica'ls bé.
+                Escriu-ho tot en format markdown i utilitza les features de markdown perquè s'entengui bé.
                 Fes-ho en l'idioma {lang}.
-                
+                El text està entre els guionets (---).
+                ---
                 {text}
+                ---
                 """}
                 openai_client = openai.OpenAI(api_key=os.environ["OPENAI_APIKEY"])
                 response = openai_client.chat.completions.create(model="gpt-4-1106-preview", messages=[initial_message])
