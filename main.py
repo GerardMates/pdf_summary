@@ -3,8 +3,7 @@ import openai
 import PyPDF2 as pp
 from dotenv import load_dotenv
 import os
-import pdfkit
-import markdown
+import pypandoc
 load_dotenv()
 
 text_to_num = {
@@ -68,18 +67,8 @@ def main():
             with st.spinner("Generant pdf per descarregar..."):
                 markdown_text = response.choices[0].message.content
 
-                # Convert Markdown to HTML
-                html_text = markdown.markdown(markdown_text)
-
-                # Create a temporary HTML file
-                with open("temp.html", "w") as file:
-                    file.write(html_text)
-
-                # Convert HTML to PDF
-                pdfkit.from_file("temp.html", "output.pdf")
-
-                # Remove the temporary HTML file
-                os.remove("temp.html")
+                # Convert Markdown to pdf
+                pypandoc.convert_text(markdown_text, 'pdf', format='md', outputfile="output.pdf", extra_args=['--pdf-engine=xelatex'])
 
                 # Provide the PDF for download
                 with open("output.pdf", "rb") as file:
@@ -92,7 +81,7 @@ def main():
             with open("output.md", "r") as file:
                 st.markdown(file.read())
             with open("output.pdf", "rb") as file:
-                st.download_button(label="Download PDF",
+                st.download_button(label="Descarrega el PDF",
                                    data=file,
                                    file_name="summary.pdf",
                                    mime="application/pdf",
