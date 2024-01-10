@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "pdf_summary"
+version = "0.1.0"
+description = ""
+authors = ["Gerard Castellà <gcaste11@xtec.cat>", "Aitor Iraola <aitirga@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">3.9,<3.9.7 || >3.9.7,<3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
